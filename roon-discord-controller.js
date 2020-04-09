@@ -52,13 +52,18 @@ roon.init_services({
 });
 
 discord.bot.on("message", message => {
-    console.log(message.content);
+    console.log(message);
+});
+
+discord.bot.on("voiceStateUpdate", message => {
+    discord.listeners(_settings.voicechannelid);
 });
 
 discord.bot.login(_settings.bottoken);
 
 discord.bot.once("ready", () => {
     console.log("Ready!");
+    discord.listeners(_settings.voicechannelid);
 });
 
 roon.start_discovery();

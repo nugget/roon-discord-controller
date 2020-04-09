@@ -42,11 +42,11 @@ function handler(cmd, data) {
     }
 };
 
-function core_unpaired(core_) {
+function core_unpaired(core) {
     console.log(
-        core_.core_id,
-        core_.display_name,
-        core_.display_version,
+        core.core_id,
+        core.display_name,
+        core.display_version,
         "-",
         "LOST"
     );

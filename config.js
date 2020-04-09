@@ -6,6 +6,8 @@ DefaultConfig = {
     bottoken: "",
     channelid: "",
     announcetracks: false,
+    voicechannelid: "",
+    streamerid: "",
 };
 
 
@@ -28,7 +30,7 @@ function layout(settings) {
 
     l.layout.push({
         type: "string",
-        title: "Channel ID",
+        title: "Text Channel ID",
         setting: "channelid"
     });
 
@@ -36,6 +38,18 @@ function layout(settings) {
         type: "string",
         title: "Announce plays to Discord channel",
         setting: "announcetracks",
+    });
+
+    l.layout.push({
+        type: "string",
+        title: "Voice Channel ID",
+        setting: "voicechannelid"
+    });
+
+    l.layout.push({
+        type: "string",
+        title: "Streamer User ID",
+        setting: "streamerid"
     });
 
     return l;
