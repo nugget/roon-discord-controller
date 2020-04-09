@@ -64,6 +64,7 @@ discord.bot.once("ready", () => {
     console.log("Connected to Discord");
     ll = discord.listenersFromCache(config.get("voicechannelid"));
     discord.isAnyoneListening(ll);
+    discord.clearActivity();
 });
 
 roon.start_discovery();

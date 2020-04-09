@@ -11,6 +11,11 @@ function announceplay(_msg) {
         return;
     }
 
+    if (!bot.readyAt) {
+        console.log("bot is not ready");
+        return;
+    }
+
     console.log(_msg);
     cid = config.get("channelid");
     console.log("cid", cid, typeof cid);
@@ -23,12 +28,61 @@ function announceplay(_msg) {
     }
 }
 
+function updateActivity(_zd) {
+    if (!config.flag("setpresence")) {
+        console.log("Presence updates are disabled");
+        return;
+    }
+
+    if (!bot.readyAt) {
+        console.log("bot is not ready");
+        return;
+    }
+
+    var _msg = _zd.now_playing.one_line.line1;
+
+    bot.user.setPresence({
+        afk: false,
+        status: "online",
+        activity: {
+            name: _msg,
+            type: "LISTENING",
+            url: "https://music.nuggethaus.net/",
+            application: "Roon"
+        }
+    });
+
+    console.log("Updated Presence");
+}
+
+function clearActivity() {
+    if (!bot.readyAt) {
+        console.log("bot is not ready");
+        return;
+    }
+
+    bot.user.setActivity("", {});
+    //bot.user.setStatus('idle');
+    //bot.user.setAFK(true);
+
+    bot.user.setPresence({
+        afk: true,
+        status: "idle",
+        activity: {
+            name: "Nothing",
+            type: "LISTENING",
+            url: "https://music.nuggethaus.net/",
+            application: "Roon"
+        }
+    });
+
+    console.log("Cleared Presence");
+}
+
 // 295363993311248384 // parallelsys
 // 697505131570135180 // nugget
 // 696784421784780882 // nuggethaus
 // 331810131019038720 // me?
-
-696784421784780882;
 
 function listenersFromCache(_vcid) {
     console.log("Determining listener list from channel %s (cached)", _vcid);
@@ -88,6 +142,8 @@ function isAnyoneListening(ll) {
 
 exports.bot = bot;
 exports.announceplay = announceplay;
+exports.updateActivity = updateActivity;
+exports.clearActivity = clearActivity;
 exports.listenersFromCache = listenersFromCache;
 exports.listenersFromEvent = listenersFromEvent;
 exports.isAnyoneListening = isAnyoneListening;

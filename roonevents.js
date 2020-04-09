@@ -31,12 +31,13 @@ function handler(cmd, data) {
                     zonename = zonename.replace(/ \+.*/, "");
                     roon_zones[zonename] = JSON.parse(JSON.stringify(zd));
 
+                    if (config.debug) {
+                        console.log("PLAYING", zd);
+                    }
                     if (
                         typeof zd.state !== "undefined" &&
                         zd.state == "playing"
                     ) {
-                        console.log("PLAYING");
-                        console.log(zd);
 
                         if (zd.now_playing.seek_position < 10) {
                             var msg =
@@ -44,7 +45,9 @@ function handler(cmd, data) {
                             discord.announceplay(msg);
                         }
 
-                        discord.updatePresence(zones[index]);
+                        discord.updateActivity(zd);
+                    } else {
+                        discord.clearActivity();
                     }
                 }
             }
