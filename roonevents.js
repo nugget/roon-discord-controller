@@ -3,11 +3,19 @@ var zonedata = require("./zonedata.js"),
 
 var roon_zones = {};
 
-
+var transport;
 
 function core_paired(core) {
-    let transport = core.services.RoonApiTransport;
+    transport = core.services.RoonApiTransport;
     transport.subscribe_zones(handler);
+
+    transport.get_zones(function (msg, body) {
+        console.log("GET_ZONES", body);
+        console.log("ARRAY", body.zones[1].outputs);
+    });
+
+    
+   
 };
 
 function handler(cmd, data) {
@@ -52,5 +60,19 @@ function core_unpaired(core) {
     );
 };
 
+function add_discord() {
+    transport.group_outputs(['1701fa13b47e4ae20588acf651c74e9a6302', '1701bffdbdb0615b297e24788d379c14e4d9'], function (msg) {
+        console.log("GROUPED", msg);
+    });
+}
+
+function drop_discord() {
+    transport.ungroup_outputs(['1701fa13b47e4ae20588acf651c74e9a6302', '1701bffdbdb0615b297e24788d379c14e4d9'], function (msg) {
+        console.log("UNGROUPED", msg);
+    });
+}
+
 exports.core_paired = core_paired;
 exports.core_unpaired = core_unpaired;
+exports.add_discord = add_discord;
+exports.drop_discord = drop_discord;

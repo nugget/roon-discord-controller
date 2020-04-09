@@ -24,6 +24,7 @@ var roon = new RoonApi({
 
 _settings = config.load(roon);
 discord.registerchannel(_settings.channelid);
+discord.registervoicechannel(_settings.voicechannelid);
 
 var roon_svc_status = new RoonApiStatus(roon);
 
@@ -42,6 +43,7 @@ var roon_svc_settings = new RoonApiSettings(roon, {
             roon_svc_settings.update_settings(l);
             roon.save_config("settings", _settings);
             discord.registerchannel(_settings.channelid);
+            discord.registervoicechannel(_settings.voicechannelid);
         }
     }
 });
@@ -56,14 +58,18 @@ discord.bot.on("message", message => {
 });
 
 discord.bot.on("voiceStateUpdate", message => {
-    discord.listeners(_settings.voicechannelid);
+    ll = discord.listenersFromEvent(message);
+    discord.isAnyoneListening(ll);
 });
 
 discord.bot.login(_settings.bottoken);
 
 discord.bot.once("ready", () => {
-    console.log("Ready!");
-    discord.listeners(_settings.voicechannelid);
+    console.log("Connected to Discord");
+    ll = discord.listenersFromCache(_settings.voicechannelid);
+    discord.isAnyoneListening(ll);
 });
 
 roon.start_discovery();
+
+console.log("Starting my tests");
