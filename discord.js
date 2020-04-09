@@ -6,6 +6,11 @@ var Discord = require("discord.js");
 var bot = new Discord.Client();
 
 function announceplay(_msg) {
+    if (!config.flag("announcetracks")) {
+        console.log("Track announcements are disabled");
+        return;
+    }
+
     console.log(_msg);
     cid = config.get("channelid");
     console.log("cid", cid, typeof cid);

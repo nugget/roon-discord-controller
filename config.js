@@ -11,11 +11,11 @@ DefaultConfig = {
     streamerid: "",
     streamingzone: "",
     localzone: "",
+    debug: false
 };
 
-var debug = true;
-
 var current = {};
+var debug = false;
 
 function load(roon) {
     current = roon.load_config("settings") || DefaultConfig;
@@ -28,8 +28,35 @@ function get(_key) {
     return current[_key];
 }
 
+function flag(_key) {
+    _val = current[_key];
+
+    switch (typeof _val) {
+        case "boolean":
+            return _val;
+            break;
+        case "string":
+            switch (_val) {
+                case "true":
+                case "on":
+                case "yes":
+                case "1":
+                    return true;
+                case "default":
+                    return false;
+            }
+        default:
+            console.log(
+                "Unknown flag type " + _val + " (" + typeof _val + ")"
+            );
+            return false;
+    }
+}
+
 function update(_settings) {
     current = _settings;
+    debug = current["debug"];
+    console.log("Debugging output is " + debug);
 }
 
 function all() {
@@ -37,6 +64,11 @@ function all() {
 }
 
 // https://community.roonlabs.com/t/settings-api-can-make-a-remote-crash/35899/4?u=nugget
+
+const fakeBoolean = [
+    { title: "On", value: true },
+    { title: "Off", value: false }
+];
 
 function layout(settings) {
     var l = {
@@ -60,13 +92,15 @@ function layout(settings) {
                 setting: "channelid"
             },
             {
-                type: "string",
+                type: "dropdown",
                 title: "Announce plays",
+                values: fakeBoolean,
                 setting: "announcetracks"
             },
             {
-                type: "string",
+                type: "dropdown",
                 title: "Update Presence",
+                values: fakeBoolean,
                 setting: "setpresence"
             }
         ]
@@ -100,6 +134,20 @@ function layout(settings) {
         ]
     });
 
+    l.layout.push({
+        type: "group",
+        title: "Developer Settings",
+        collapsable: true,
+        items: [
+            {
+                type: "dropdown",
+                values: fakeBoolean,
+                title: "Debug Output",
+                setting: "debug"
+            }
+        ]
+    });
+
     return l;
 }
 
@@ -108,4 +156,5 @@ exports.layout = layout;
 exports.get = get;
 exports.update = update;
 exports.all = all;
+exports.flag = flag;
 exports.debug = debug;
