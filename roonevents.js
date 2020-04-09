@@ -43,6 +43,8 @@ function handler(cmd, data) {
                                 "Playing: " + zd.now_playing.one_line.line1;
                             discord.announceplay(msg);
                         }
+
+                        discord.updatePresence(zones[index]);
                     }
                 }
             }
@@ -61,14 +63,28 @@ function core_unpaired(core) {
 };
 
 function add_discord() {
-    transport.group_outputs(['1701fa13b47e4ae20588acf651c74e9a6302', '1701bffdbdb0615b297e24788d379c14e4d9'], function (msg) {
-        console.log("GROUPED", msg);
+    l = config.get("localzone")
+    d = config.get("streamingzone")
+
+    if (typeof l.output_id === "undefined" || typeof d.output_id == "undefined") {
+        return;
+    }
+
+    transport.group_outputs([l.output_id, d.output_id], function (msg) {
+        console.log("Grouped %s and %s zones together", l.name, d.name);
     });
 }
 
 function drop_discord() {
-    transport.ungroup_outputs(['1701fa13b47e4ae20588acf651c74e9a6302', '1701bffdbdb0615b297e24788d379c14e4d9'], function (msg) {
-        console.log("UNGROUPED", msg);
+    l = config.get("localzone")
+    d = config.get("streamingzone")
+
+    if (typeof l.output_id === "undefined" || typeof d.output_id == "undefined") {
+        return;
+    }
+
+    transport.ungroup_outputs([l.output_id, d.output_id], function (msg) {
+        console.log("Ungrouped %s and %s zones", l.name, d.name);
     });
 }
 
