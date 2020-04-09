@@ -6,6 +6,7 @@ DefaultConfig = {
     bottoken: "",
     channelid: "",
     announcetracks: false,
+    commandprefix: "!",
     setpresence: true,
     voicechannelid: "",
     streamerid: "",
@@ -102,7 +103,12 @@ function layout(settings) {
                 title: "Update Presence",
                 values: fakeBoolean,
                 setting: "setpresence"
-            }
+            },
+            {
+                type: "string",
+                title: "Command Prefix",
+                setting: "commandprefix"
+            },
         ]
     });
 
