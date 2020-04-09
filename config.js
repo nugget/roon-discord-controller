@@ -13,9 +13,27 @@ DefaultConfig = {
     localzone: "",
 };
 
+var debug = true;
+
+var current = {};
 
 function load(roon) {
-    return roon.load_config("settings") || DefaultConfig;
+    current = roon.load_config("settings") || DefaultConfig;
+}
+
+function get(_key) {
+    if (debug) {
+        console.log("config getter for %s returned", _key, current[_key]);
+    }
+    return current[_key];
+}
+
+function update(_settings) {
+    current = _settings;
+}
+
+function all() {
+    return current;
 }
 
 // https://community.roonlabs.com/t/settings-api-can-make-a-remote-crash/35899/4?u=nugget
@@ -44,16 +62,15 @@ function layout(settings) {
             {
                 type: "string",
                 title: "Announce plays",
-                setting: "announcetracks",
+                setting: "announcetracks"
             },
             {
                 type: "string",
                 title: "Update Presence",
-                setting: "setpresence",
+                setting: "setpresence"
             }
         ]
     });
-
 
     l.layout.push({
         type: "group",
@@ -88,3 +105,7 @@ function layout(settings) {
 
 exports.load = load;
 exports.layout = layout;
+exports.get = get;
+exports.update = update;
+exports.all = all;
+exports.debug = debug;

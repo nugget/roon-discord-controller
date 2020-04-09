@@ -9,8 +9,6 @@ var RoonApi = require("node-roon-api"),
     RoonApiSettings = require("node-roon-api-settings"),
     RoonApiImage = require("node-roon-api-image");
 
-var _settings;
-
 var roon = new RoonApi({
     extension_id: "org.macnugget.discord",
     display_name: "Discord Controller",
@@ -22,15 +20,11 @@ var roon = new RoonApi({
     core_unpaired: roonevents.core_unpaired
 });
 
-_settings = config.load(roon);
-discord.registerchannel(_settings.channelid);
-discord.registervoicechannel(_settings.voicechannelid);
-
 var roon_svc_status = new RoonApiStatus(roon);
 
 var roon_svc_settings = new RoonApiSettings(roon, {
     get_settings: function (cb) {
-        cb(config.layout(_settings));
+        cb(config.layout(config.all()));
     },
     save_settings: function (req, isdryrun, settings) {
         let l = config.layout(settings.values);
@@ -39,14 +33,14 @@ var roon_svc_settings = new RoonApiSettings(roon, {
         });
 
         if (!isdryrun && !l.has_error) {
-            _settings = l.values;
             roon_svc_settings.update_settings(l);
-            roon.save_config("settings", _settings);
-            discord.registerchannel(_settings.channelid);
-            discord.registervoicechannel(_settings.voicechannelid);
+            roon.save_config("settings", l.values);
+            config.update(l.values);
         }
     }
 });
+
+config.load(roon);
 
 roon.init_services({
     required_services: [RoonApiTransport],
@@ -62,11 +56,11 @@ discord.bot.on("voiceStateUpdate", message => {
     discord.isAnyoneListening(ll);
 });
 
-discord.bot.login(_settings.bottoken);
+discord.bot.login(config.get("bottoken"));
 
 discord.bot.once("ready", () => {
     console.log("Connected to Discord");
-    ll = discord.listenersFromCache(_settings.voicechannelid);
+    ll = discord.listenersFromCache(config.get("voicechannelid"));
     discord.isAnyoneListening(ll);
 });
 

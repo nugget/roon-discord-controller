@@ -1,5 +1,6 @@
 var zonedata = require("./zonedata.js"),
-    discord = require("./discord.js");
+    discord = require("./discord.js"),
+    config = require("./config.js");
 
 var roon_zones = {};
 
@@ -10,12 +11,11 @@ function core_paired(core) {
     transport.subscribe_zones(handler);
 
     transport.get_zones(function (msg, body) {
-        console.log("GET_ZONES", body);
-        console.log("ARRAY", body.zones[1].outputs);
+        if (config.debug) {
+            console.log("GET_ZONES", body);
+            console.log("ARRAY", body.zones[1].outputs);
+        }
     });
-
-    
-   
 };
 
 function handler(cmd, data) {
