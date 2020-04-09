@@ -12,11 +12,11 @@ DefaultConfig = {
     streamerid: "",
     streamingzone: "",
     localzone: "",
-    debug: false
+    debug: true
 };
 
 var current = {};
-var debug = false;
+var debug = true;
 
 function load(roon) {
     current = roon.load_config("settings") || DefaultConfig;
