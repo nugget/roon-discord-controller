@@ -5,12 +5,18 @@ var Discord = require("discord.js");
 
 var bot = new Discord.Client();
 
+
+
 function announceplay(_msg) {
     if (!config.flag("announcetracks")) {
         console.log("Track announcements are disabled");
         return;
     }
 
+    say(_msg);
+}
+
+function say(_msg) {
     if (!bot.readyAt) {
         console.log("bot is not ready");
         return;
@@ -22,7 +28,7 @@ function announceplay(_msg) {
     var c = bot.channels.cache.get(cid);
     console.log("channel", c, typeof c);
     if (c == "" || c === "undefined") {
-        console.log("Cannot send, Discord is not initialized");
+        console.log("Cannot send, channelid '%s' is not found", cid);
     } else {
         c.send(_msg);
     }
@@ -141,6 +147,7 @@ function isAnyoneListening(ll) {
 }
 
 exports.bot = bot;
+exports.say = say;
 exports.announceplay = announceplay;
 exports.updateActivity = updateActivity;
 exports.clearActivity = clearActivity;

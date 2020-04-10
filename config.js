@@ -12,14 +12,17 @@ DefaultConfig = {
     streamerid: "",
     streamingzone: "",
     localzone: "",
-    debug: true
+    debug: false
 };
 
 var current = {};
-var debug = true;
+var debug = false;
 
 function load(roon) {
+    console.log("Loading configuration cache");
     current = roon.load_config("settings") || DefaultConfig;
+    debug = current.debug;
+    console.log("Debugging output is " + debug);
 }
 
 function get(_key) {
@@ -55,6 +58,7 @@ function flag(_key) {
 }
 
 function update(_settings) {
+    console.log("Updating configuration cache");
     current = _settings;
     debug = current["debug"];
     console.log("Debugging output is " + debug);
