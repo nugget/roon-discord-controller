@@ -16,7 +16,7 @@ function core_paired(core) {
             console.log("ARRAY", body.zones[1].outputs);
         }
     });
-};
+}
 
 function handler(cmd, data) {
     if (typeof data !== "undefined") {
@@ -34,26 +34,44 @@ function handler(cmd, data) {
                     if (config.debug) {
                         console.log("PLAYING", zd);
                     }
-                    if (
-                        typeof zd.state !== "undefined" &&
-                        zd.state == "playing"
-                    ) {
 
-                        if (zd.now_playing.seek_position < 10) {
-                            var msg =
-                                "Playing: " + zd.now_playing.one_line.line1;
-                            discord.announceplay(msg);
+                    if (typeof zd.state !== "undefined") {
+                        switch (zd.state) {
+                            case "loading":
+                                // Do nothing during short-lived loading pauses
+                                break;
+                            case "playing":
+                                playing_handler(zd);
+                                break;
+                            case "paused":
+                            case "stopped":
+                                stopped_handler(zd);
+                                break;
+                            default:
+                                console.log("UNKNOWN zone state: " + zd.state);
+                                stopped_handler();
                         }
-
-                        discord.updateActivity(zd);
-                    } else {
-                        discord.clearActivity();
                     }
                 }
             }
         }
     }
-};
+}
+
+function playing_handler(zd) {
+    if (zd.now_playing.seek_position < 10) {
+        // Only announce playing at the start of a song, so we avoid double 
+        // announcemened after restarts or pause/resume operations
+        var msg = "Playing: " + zd.now_playing.one_line.line1;
+        discord.announceplay(msg);
+    }
+
+    discord.updateActivity(zd);
+}
+
+function stopped_handler(zd) {
+    discord.clearActivity();
+}
 
 function core_unpaired(core) {
     console.log(
@@ -63,13 +81,16 @@ function core_unpaired(core) {
         "-",
         "LOST"
     );
-};
+}
 
 function add_discord() {
-    l = config.get("localzone")
-    d = config.get("streamingzone")
+    l = config.get("localzone");
+    d = config.get("streamingzone");
 
-    if (typeof l.output_id === "undefined" || typeof d.output_id == "undefined") {
+    if (
+        typeof l.output_id === "undefined" ||
+        typeof d.output_id == "undefined"
+    ) {
         return;
     }
 
@@ -79,10 +100,13 @@ function add_discord() {
 }
 
 function drop_discord() {
-    l = config.get("localzone")
-    d = config.get("streamingzone")
+    l = config.get("localzone");
+    d = config.get("streamingzone");
 
-    if (typeof l.output_id === "undefined" || typeof d.output_id == "undefined") {
+    if (
+        typeof l.output_id === "undefined" ||
+        typeof d.output_id == "undefined"
+    ) {
         return;
     }
 
