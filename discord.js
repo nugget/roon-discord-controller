@@ -5,8 +5,6 @@ var Discord = require("discord.js");
 
 var bot = new Discord.Client();
 
-
-
 function announceplay(_msg) {
     if (!config.flag("announcetracks")) {
         console.log("Track announcements are disabled");
@@ -104,9 +102,11 @@ function listenersFromCache(_vcid) {
 
     channel.guild.voiceStates.cache.forEach(function (value, key) {
         if (value.channelID == _vcid) {
-            ll.push(key);
-            if (config.debug) {
-                console.log("user", key, "channel", value.channelID);
+            if (value.serverDeaf || value.selfDeaf) {
+                console.log("user " + value.id + " is in channel " + value.channelID + " but is deaf.  Skipping");
+            } else {
+                console.log("user " + value.id + " is in channel " + value.channelID);
+                ll.push(value.id);
             }
         }
     });
@@ -125,9 +125,11 @@ function listenersFromEvent(_msg) {
     voicechannels = _msg.guild.voiceStates.cache;
     voicechannels.forEach(function (value, key) {
         if (value.channelID == _vcid) {
-            ll.push(value.id);
-            if (config.debug) {
-                console.log("user", value.id, "channel", value.channelID);
+            if (value.serverDeaf || value.selfDeaf) {
+                console.log("user " + value.id + " is in channel " + value.channelID + " but is deaf.  Skipping");
+            } else {
+                console.log("user " + value.id + " is in channel " + value.channelID);
+                ll.push(value.id);
             }
         }
     });
