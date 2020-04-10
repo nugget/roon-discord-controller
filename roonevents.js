@@ -4,9 +4,11 @@ var zonedata = require("./zonedata.js"),
 
 var roon_zones = {};
 
-var transport;
+var core, transport;
 
-function core_paired(core) {
+function core_paired(_core) {
+    core = _core;
+
     transport = core.services.RoonApiTransport;
     transport.subscribe_zones(handler);
 
@@ -73,7 +75,9 @@ function stopped_handler(zd) {
     discord.clearActivity();
 }
 
-function core_unpaired(core) {
+function core_unpaired(_core) {
+    core = _core;
+
     console.log(
         core.core_id,
         core.display_name,

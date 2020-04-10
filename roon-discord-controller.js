@@ -7,7 +7,8 @@ var RoonApi = require("node-roon-api"),
     RoonApiStatus = require("node-roon-api-status"),
     RoonApiTransport = require("node-roon-api-transport"),
     RoonApiSettings = require("node-roon-api-settings"),
-    RoonApiImage = require("node-roon-api-image");
+    RoonApiImage = require("node-roon-api-image"),
+    RoonApiBrowse = require("node-roon-api-browse");
 
 var roon = new RoonApi({
     extension_id: "org.macnugget.discord",
