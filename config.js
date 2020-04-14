@@ -132,6 +132,12 @@ function layout(settings) {
                 setting: "streamerid"
             },
             {
+                type: "dropdown",
+                title: "Link Zones",
+                values: fakeBoolean,
+                setting: "linkzones"
+            },
+            {
                 type: "zone",
                 title: "Streaming Zone",
                 setting: "streamingzone"
@@ -141,6 +147,7 @@ function layout(settings) {
                 title: "Local Zone",
                 setting: "localzone"
             }
+
         ]
     });
 

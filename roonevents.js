@@ -88,6 +88,11 @@ function core_unpaired(_core) {
 }
 
 function add_discord() {
+    if (!config.flag("linkzones")) {
+        drop_discord();
+        return
+    }
+
     l = config.get("localzone");
     d = config.get("streamingzone");
 
