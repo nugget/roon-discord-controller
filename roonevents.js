@@ -98,7 +98,7 @@ function add_discord() {
         return;
     }
 
-    transport.group_outputs([l.output_id, d.output_id], function (msg) {
+    transport.group_outputs([d.output_id, l.output_id], function (msg) {
         console.log("Grouped %s and %s zones together", l.name, d.name);
     });
 }
@@ -114,7 +114,7 @@ function drop_discord() {
         return;
     }
 
-    transport.ungroup_outputs([l.output_id, d.output_id], function (msg) {
+    transport.ungroup_outputs([d.output_id, l.output_id], function (msg) {
         console.log("Ungrouped %s and %s zones", l.name, d.name);
     });
 }

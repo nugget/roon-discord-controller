@@ -73,7 +73,7 @@ function clearActivity() {
         afk: true,
         status: "idle",
         activity: {
-            name: "Nothing",
+            name: "silence",
             type: "LISTENING",
             url: "https://music.nuggethaus.net/",
             application: "Roon"
