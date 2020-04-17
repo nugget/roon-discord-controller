@@ -141,7 +141,7 @@ function isAnyoneListening(ll) {
     //
     // This is dumb but it will work for now
     //
-    if (ll.length == 1) {
+    if (ll.length <= 1) {
         roonevents.drop_discord();
     } else {
         roonevents.add_discord();
