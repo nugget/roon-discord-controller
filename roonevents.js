@@ -6,6 +6,15 @@ var roon_zones = {};
 
 var core, transport;
 
+function ready() {
+    // console.log("READYCHECK", transport);
+    if (!transport) {
+        return false;
+    }
+
+    return true;
+}
+
 function core_paired(_core) {
     core = _core;
 
@@ -62,7 +71,7 @@ function handler(cmd, data) {
 
 function playing_handler(zd) {
     if (zd.now_playing.seek_position < 10) {
-        // Only announce playing at the start of a song, so we avoid double 
+        // Only announce playing at the start of a song, so we avoid double
         // announcemened after restarts or pause/resume operations
         var msg = "Playing: " + zd.now_playing.one_line.line1;
         discord.announceplay(msg);
@@ -90,7 +99,11 @@ function core_unpaired(_core) {
 function add_discord() {
     if (!config.flag("linkzones")) {
         drop_discord();
-        return
+        return;
+    }
+
+    if (!ready()) {
+        return;
     }
 
     l = config.get("localzone");
@@ -111,6 +124,10 @@ function add_discord() {
 function drop_discord() {
     l = config.get("localzone");
     d = config.get("streamingzone");
+
+    if (!ready()) {
+        return;
+    }
 
     if (
         typeof l.output_id === "undefined" ||

@@ -44,7 +44,7 @@ var roon_svc_settings = new RoonApiSettings(roon, {
 config.load(roon);
 
 roon.init_services({
-    required_services: [RoonApiTransport],
+    required_services: [RoonApiTransport, RoonApiBrowse],
     provided_services: [roon_svc_settings, roon_svc_status]
 });
 
@@ -71,3 +71,4 @@ discord.bot.once("ready", () => {
 roon.start_discovery();
 
 console.log("Starting my tests");
+
