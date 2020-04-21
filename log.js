@@ -3,32 +3,38 @@ var config = require("./config.js"),
 
 const chalk = require("chalk");
 
+function tslog(template, ...args) {
+    var ts = new Date().toISOString().replace(/T/, " ").replace(/\..+/, "");
+    template = "%s " + template;
+    console.log(template, ts, ...args);
+}
+
 function trace(template, ...args) {
     if (config.flag("debug")) {
-        console.log(chalk.white("[TRACE] ") + template, ...args);
+        tslog(chalk.white("[TRACE] ") + template, ...args);
     }
 }
 
 function debug(template, ...args) {
     if (config.flag("debug")) {
-        console.log(chalk.white("[DEBUG] ") + template, ...args);
+        tslog(chalk.white("[DEBUG] ") + template, ...args);
     }
 }
 
 function info(template, ...args) {
-    console.log(chalk.cyan("[INFO] ")+template, ...args);
+    tslog(chalk.cyan("[INFO] ")+template, ...args);
 }
 
 function warn(template, ...args) {
-    console.log(chalk.yellow("[WARN] ")+template, ...args);
+    tslog(chalk.yellow("[WARN] ")+template, ...args);
 }
 
 function error(template, ...args) {
-    console.log(chalk.redBright("[ERROR] ")+template, ...args);
+    tslog(chalk.redBright("[ERROR] ")+template, ...args);
 }
 
 function fatal(template, ...args) {
-    console.log(chalk.redBright("[ERROR] ")+template, ...args);
+    tslog(chalk.redBright("[ERROR] ")+template, ...args);
     process.exit(255);
 }
 
