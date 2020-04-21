@@ -20,7 +20,7 @@ var current = {};
 function load(roon) {
     console.log("Loading configuration cache");
     current = roon.load_config("settings") || DefaultConfig;
-    console.log("Debugging output is " + debug);
+    console.log("Debugging output is " + current.debug);
 }
 
 function get(_key) {
@@ -62,7 +62,7 @@ function flag(_key) {
 function update(_settings) {
     console.log("Updating configuration cache");
     current = _settings;
-    console.log("Debugging output is " + debug);
+    console.log("Debugging output is " + current.debug);
 }
 
 function all() {
