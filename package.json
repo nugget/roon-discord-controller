@@ -1,6 +1,6 @@
 {
     "name": "roon-discord-controller",
-    "version": "0.1.0",
+    "version": "0.2.0",
     "description": "Roon Controller via Discord",
     "main": "roon-discord-controller.js",
     "author": {
