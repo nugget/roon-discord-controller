@@ -2,6 +2,7 @@ var config = require("./config.js"),
     zonedata = require("./zonedata.js"),
     roonevents = require("./roonevents.js"),
     discord = require("./discord.js"),
+    log = require("./log.js"),
     pjson = require("./package.json");
 
 var RoonApi = require("node-roon-api"),
@@ -64,7 +65,7 @@ roon.init_services({
 
 discord.bot.on("message", message => {
     if (config.debug) {
-        console.log(message);
+        log.info(message);
     }
 });
 
@@ -76,7 +77,7 @@ discord.bot.on("voiceStateUpdate", message => {
 discord.bot.login(config.get("bottoken"));
 
 discord.bot.once("ready", () => {
-    console.log("Connected to Discord");
+    log.info("Connected to Discord");
     ll = discord.listenersFromCache(config.get("voicechannelid"));
     discord.isAnyoneListening(ll);
     discord.clearActivity();

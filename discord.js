@@ -1,4 +1,5 @@
 var roonevents = require("./roonevents.js"),
+    log = require("./log.js"),
     config = require("./config.js");
 
 var Discord = require("discord.js");
@@ -7,7 +8,7 @@ var bot = new Discord.Client();
 
 function announceplay(_msg) {
     if (!config.flag("announcetracks")) {
-        console.log("Track announcements are disabled");
+        log.info("Track announcements are disabled");
         return;
     }
 
@@ -16,17 +17,17 @@ function announceplay(_msg) {
 
 function say(_msg) {
     if (!bot.readyAt) {
-        console.log("bot is not ready");
+        log.info("bot is not ready");
         return;
     }
 
-    console.log(_msg);
+    log.info(_msg);
     cid = config.get("channelid");
-    console.log("cid", cid, typeof cid);
+    log.info("cid", cid, typeof cid);
     var c = bot.channels.cache.get(cid);
-    console.log("channel", c, typeof c);
+    log.info("channel", c, typeof c);
     if (c == "" || c === "undefined") {
-        console.log("Cannot send, channelid '%s' is not found", cid);
+        log.info("Cannot send, channelid '%s' is not found", cid);
     } else {
         c.send(_msg);
     }
@@ -34,12 +35,12 @@ function say(_msg) {
 
 function updateActivity(_zd) {
     if (!config.flag("setpresence")) {
-        console.log("Presence updates are disabled");
+        log.info("Presence updates are disabled");
         return;
     }
 
     if (!bot.readyAt) {
-        console.log("bot is not ready");
+        log.info("bot is not ready");
         return;
     }
 
@@ -56,12 +57,12 @@ function updateActivity(_zd) {
         }
     });
 
-    console.log("Updated Presence");
+    log.info("Updated Presence");
 }
 
 function clearActivity() {
     if (!bot.readyAt) {
-        console.log("bot is not ready");
+        log.info("bot is not ready");
         return;
     }
 
@@ -80,7 +81,7 @@ function clearActivity() {
         }
     });
 
-    console.log("Cleared Presence");
+    log.info("Cleared Presence");
 }
 
 // 295363993311248384 // parallelsys
@@ -89,7 +90,7 @@ function clearActivity() {
 // 331810131019038720 // me?
 
 function listenersFromCache(_vcid) {
-    console.log("Determining listener list from channel %s (cached)", _vcid);
+    log.info("Determining listener list from channel %s (cached)", _vcid);
     var ll = [];
 
     c = bot.channels.fetch(_vcid);
@@ -97,15 +98,15 @@ function listenersFromCache(_vcid) {
     channel = bot.channels.cache.get(_vcid);
 
     if (config.debug) {
-        console.log("CHANNEL", channel);
+        log.info("CHANNEL", channel);
     }
 
     channel.guild.voiceStates.cache.forEach(function (value, key) {
         if (value.channelID == _vcid) {
             if (value.serverDeaf || value.selfDeaf) {
-                console.log("user " + value.id + " is in channel " + value.channelID + " but is deaf.  Skipping");
+                log.info("user " + value.id + " is in channel " + value.channelID + " but is deaf.  Skipping");
             } else {
-                console.log("user " + value.id + " is in channel " + value.channelID);
+                log.info("user " + value.id + " is in channel " + value.channelID);
                 ll.push(value.id);
             }
         }
@@ -116,19 +117,19 @@ function listenersFromCache(_vcid) {
 
 function listenersFromEvent(_msg) {
     _vcid = config.get("voicechannelid");
-    console.log("Determining listener list from event for vcid " + _vcid);
+    log.info("Determining listener list from event for vcid " + _vcid);
 
     var ll = [];
     if (config.debug) {
-        console.log("EVENT", _msg);
+        log.info("EVENT", _msg);
     }
     voicechannels = _msg.guild.voiceStates.cache;
     voicechannels.forEach(function (value, key) {
         if (value.channelID == _vcid) {
             if (value.serverDeaf || value.selfDeaf) {
-                console.log("user " + value.id + " is in channel " + value.channelID + " but is deaf.  Skipping");
+                log.info("user " + value.id + " is in channel " + value.channelID + " but is deaf.  Skipping");
             } else {
-                console.log("user " + value.id + " is in channel " + value.channelID);
+                log.info("user " + value.id + " is in channel " + value.channelID);
                 ll.push(value.id);
             }
         }

@@ -16,20 +16,22 @@ DefaultConfig = {
 };
 
 var current = {};
-var debug = false;
 
 function load(roon) {
     console.log("Loading configuration cache");
     current = roon.load_config("settings") || DefaultConfig;
-    debug = current.debug;
     console.log("Debugging output is " + debug);
 }
 
 function get(_key) {
-    if (debug) {
-        console.log("config getter for %s returned", _key, current[_key]);
-    }
     return current[_key];
+}
+ 
+function set(_key, value) {
+    current[_key] = value;
+    if (current["debug"]) {
+        console.log("set config value for '%s' with '%s'", _key, current[_key]);
+    }
 }
 
 function flag(_key) {
@@ -60,7 +62,6 @@ function flag(_key) {
 function update(_settings) {
     console.log("Updating configuration cache");
     current = _settings;
-    debug = current["debug"];
     console.log("Debugging output is " + debug);
 }
 
@@ -171,7 +172,7 @@ function layout(settings) {
 exports.load = load;
 exports.layout = layout;
 exports.get = get;
+exports.set = set;
 exports.update = update;
 exports.all = all;
 exports.flag = flag;
-exports.debug = debug;
