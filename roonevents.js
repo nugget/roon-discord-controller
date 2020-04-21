@@ -8,7 +8,7 @@ var roon_zones = {};
 var core, transport;
 
 function ready() {
-    // console.log("READYCHECK", transport);
+    // log.info("READYCHECK", transport);
     if (!transport) {
         return false;
     }
@@ -56,7 +56,7 @@ function handler(cmd, data) {
                                 stopped_handler(zd);
                                 break;
                             default:
-                                console.log("UNKNOWN zone state: " + zd.state);
+                                log.info("UNKNOWN zone state: " + zd.state);
                                 stopped_handler();
                         }
                     }
@@ -83,14 +83,7 @@ function stopped_handler(zd) {
 
 function core_unpaired(_core) {
     core = _core;
-
-    console.log(
-        core.core_id,
-        core.display_name,
-        core.display_version,
-        "-",
-        "LOST"
-    );
+    log.warn("Roon core unpaired", core);
 }
 
 function add_discord() {
@@ -114,7 +107,7 @@ function add_discord() {
     }
 
     transport.group_outputs([d.output_id, l.output_id], function (msg) {
-        console.log("Grouped %s and %s zones together", l.name, d.name);
+        log.info("Grouped %s and %s zones together", l.name, d.name);
     });
 }
 
@@ -134,7 +127,7 @@ function drop_discord() {
     }
 
     transport.ungroup_outputs([d.output_id, l.output_id], function (msg) {
-        console.log("Ungrouped %s and %s zones", l.name, d.name);
+        log.info("Ungrouped %s and %s zones", l.name, d.name);
     });
 }
 
