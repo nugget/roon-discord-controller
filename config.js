@@ -10,8 +10,8 @@ DefaultConfig = {
     setpresence: true,
     voicechannelid: "",
     streamerid: "",
-    streamingzone: "",
-    localzone: "",
+    streamingzone: { output_id: "", name: "" },
+    localzone: { output_id: "", name: "" },
     debug: false
 };
 

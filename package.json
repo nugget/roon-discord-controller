@@ -1,10 +1,15 @@
 {
     "name": "roon-discord-controller",
-    "version": "0.0.1",
+    "version": "0.1.0",
     "description": "Roon Controller via Discord",
     "main": "roon-discord-controller.js",
-    "author": "David McNett",
+    "author": {
+        "name": "David 'nugget' McNett",
+        "email": "nugget@macnugget.org",
+        "url": "https://keybase.io/nugget"
+    },
     "license": "MIT",
+    "homepage": "https://github.com/nugget/roon-discord-controller/",
     "engines": {
         "node": ">=12.x"
     },
@@ -20,12 +25,16 @@
         "node-roon-api-settings": "github:roonlabs/node-roon-api-settings",
         "node-roon-api-status": "github:roonlabs/node-roon-api-status",
         "node-roon-api-transport": "github:roonlabs/node-roon-api-transport",
-        "npm": "^6.14.4",
-        "prettier": "^2.0.4",
-        "yarn": "^1.22.4"
+        "npm": "^6.14.4"
     },
     "repository": {
         "type": "git",
         "url": "https://github.com/nugget/roon-discord-controller.git"
+    },
+    "devDependencies": {
+        "grunt": "^1.1.0",
+        "grunt-bump": "^0.8.0",
+        "prettier": "^2.0.5",
+        "yarn": "^1.22.4"
     }
 }

@@ -1,7 +1,8 @@
 var config = require("./config.js"),
     zonedata = require("./zonedata.js"),
     roonevents = require("./roonevents.js"),
-    discord = require("./discord.js");
+    discord = require("./discord.js"),
+    pjson = require("./package.json");
 
 var RoonApi = require("node-roon-api"),
     RoonApiStatus = require("node-roon-api-status"),
@@ -13,12 +14,13 @@ var RoonApi = require("node-roon-api"),
 var roon = new RoonApi({
     extension_id: "org.macnugget.discord",
     display_name: "Discord Controller",
-    display_version: "0.0.1",
-    publisher: "Nugget",
-    email: "nugget@macnugget.org",
-    website: "https://github.com/nugget/roon-discord-controller",
+    display_version: pjson.version,
+    publisher: pjson.author.name,
+    email: pjson.author.email,
+    website: pjson.homepage,
     core_paired: roonevents.core_paired,
-    core_unpaired: roonevents.core_unpaired
+    core_unpaired: roonevents.core_unpaired,
+    log_level: "none"
 });
 
 var roon_svc_status = new RoonApiStatus(roon);
@@ -26,6 +28,7 @@ var roon_svc_status = new RoonApiStatus(roon);
 var roon_svc_settings = new RoonApiSettings(roon, {
     get_settings: function (cb) {
         cb(config.layout(config.all()));
+        set_core_log_level();
     },
     save_settings: function (req, isdryrun, settings) {
         let l = config.layout(settings.values);
@@ -37,9 +40,20 @@ var roon_svc_settings = new RoonApiSettings(roon, {
             roon_svc_settings.update_settings(l);
             roon.save_config("settings", l.values);
             config.update(l.values);
+            set_core_log_level();
         }
     }
 });
+
+function set_core_log_level() {
+    if (config.flag("debug")) {
+        // Can also set to "all" but that's way too chatty for me
+        roon.log_level = "quiet";
+    } else {
+        roon.log_level = "none";
+    }
+    log.info("Set roon core log level to %s", roon.log_level);
+}
 
 config.load(roon);
 
@@ -69,6 +83,3 @@ discord.bot.once("ready", () => {
 });
 
 roon.start_discovery();
-
-console.log("Starting my tests");
-
