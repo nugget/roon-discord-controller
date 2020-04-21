@@ -1,5 +1,6 @@
 var zonedata = require("./zonedata.js"),
     discord = require("./discord.js"),
+    log = require("./log.js"),
     config = require("./config.js");
 
 var roon_zones = {};
