@@ -64,9 +64,7 @@ roon.init_services({
 });
 
 discord.bot.on("message", message => {
-    if (config.debug) {
-        log.info(message);
-    }
+    log.debug(message);
 });
 
 discord.bot.on("voiceStateUpdate", message => {

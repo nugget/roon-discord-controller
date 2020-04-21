@@ -97,9 +97,7 @@ function listenersFromCache(_vcid) {
 
     channel = bot.channels.cache.get(_vcid);
 
-    if (config.debug) {
-        log.info("CHANNEL", channel);
-    }
+    log.debug("CHANNEL", channel);
 
     channel.guild.voiceStates.cache.forEach(function (value, key) {
         if (value.channelID == _vcid) {
@@ -120,9 +118,8 @@ function listenersFromEvent(_msg) {
     log.info("Determining listener list from event for vcid " + _vcid);
 
     var ll = [];
-    if (config.debug) {
-        log.info("EVENT", _msg);
-    }
+    log.debug("EVENT", _msg);
+
     voicechannels = _msg.guild.voiceStates.cache;
     voicechannels.forEach(function (value, key) {
         if (value.channelID == _vcid) {

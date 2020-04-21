@@ -22,10 +22,8 @@ function core_paired(_core) {
     transport.subscribe_zones(handler);
 
     transport.get_zones(function (msg, body) {
-        if (config.debug) {
-            console.log("GET_ZONES", body);
-            console.log("ARRAY", body.zones[1].outputs);
-        }
+        log.debug("GET_ZONES", body);
+        log.debug("ARRAY", body.zones[1].outputs);
     });
 }
 
@@ -42,9 +40,7 @@ function handler(cmd, data) {
                     zonename = zonename.replace(/ \+.*/, "");
                     roon_zones[zonename] = JSON.parse(JSON.stringify(zd));
 
-                    if (config.debug) {
-                        console.log("PLAYING", zd);
-                    }
+                    log.debug("PLAYING", zd);
 
                     if (typeof zd.state !== "undefined") {
                         switch (zd.state) {
