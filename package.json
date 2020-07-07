@@ -25,7 +25,7 @@
         "node-roon-api-settings": "github:roonlabs/node-roon-api-settings",
         "node-roon-api-status": "github:roonlabs/node-roon-api-status",
         "node-roon-api-transport": "github:roonlabs/node-roon-api-transport",
-        "npm": "^6.14.4"
+        "npm": "^6.14.6"
     },
     "repository": {
         "type": "git",
